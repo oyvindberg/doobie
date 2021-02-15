@@ -5,6 +5,8 @@
 package doobie
 package util
 
+import _root_.io.estatico.newtype.Coercible
+
 trait ReadSuitePlatform { self: munit.FunSuite =>
 
   case class Woozle(a: (String, Int), b: (Int, String), c: Boolean)
@@ -21,4 +23,11 @@ trait ReadSuitePlatform { self: munit.FunSuite =>
     util.Read[Option[(Int, (Woozle, Woozle, String))]]
   }
 
+  implicit def coercibleMeta[R, N](implicit ev: Coercible[Meta[R], Meta[N]], R: Meta[R]): Meta[N] = ev(R)
+
+  test("newtypes") {
+    util.Get[newtypes.N1]
+    util.Read[(newtypes.N1, newtypes.N2)]
+    util.Read[(newtypes.N1, String)]
+  }
 }

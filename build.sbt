@@ -219,6 +219,7 @@ lazy val core = project
     description := "Pure functional JDBC layer for Scala.",
     libraryDependencies ++= Seq(
       "com.propensive" %% "magnolia"  % magnoliaVersion,
+      "io.estatico" %% "newtype" % "0.4.4",
     ).filterNot(_ => isDotty.value) ++ Seq(
       "org.tpolecat"   %% "typename"  % "0.1.3",
       "com.h2database" %  "h2"        % h2Version % "test",
@@ -231,6 +232,7 @@ lazy val core = project
         case _                       => sourceDir / "scala-2.13+"
       }
     },
+    scalacOptions += "-Ymacro-annotations",
     sourceGenerators in Compile += Def.task {
       val outDir = (sourceManaged in Compile).value / "scala" / "doobie"
       val outFile = new File(outDir, "buildinfo.scala")
